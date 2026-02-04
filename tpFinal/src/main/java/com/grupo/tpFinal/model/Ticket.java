@@ -3,6 +3,9 @@ package com.grupo.tpFinal.model;
 import com.grupo.tpFinal.enums.EstadoTicket;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Entity
 public class Ticket {
 
@@ -17,12 +20,55 @@ public class Ticket {
     private EstadoTicket estado;
 
     @ManyToOne
+    @JoinColumn(name = "id_creador", nullable = false)
     private Usuario creador;
 
     @ManyToOne
     private Usuario tecnicoAsignado;
 
+    private LocalDateTime hora;
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setHora(LocalDateTime hora) {
+        this.hora = hora;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
     public void setEstado(EstadoTicket estado) {
         this.estado = estado;
+    }
+
+    public Usuario getCreador() {
+        return creador;
+    }
+
+    public void setCreador(Usuario creador) {
+        this.creador = creador;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public Usuario getTecnicoAsignado() {
+        return tecnicoAsignado;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public EstadoTicket getEstado() {
+        return estado;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
     }
 }

@@ -1,8 +1,11 @@
 package com.grupo.tpFinal.controller;
 
 import com.grupo.tpFinal.dto.LoginRequest;
+import com.grupo.tpFinal.dto.UsuarioDTO;
 import com.grupo.tpFinal.model.Usuario;
+import com.grupo.tpFinal.service.AuthService;
 import com.grupo.tpFinal.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +19,21 @@ public class AuthController {
 
     private final UsuarioService usuarioService;
 
+    @Autowired
+    private AuthService authService;
+
     public AuthController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
     @PostMapping("/login")
-    public Usuario login(@RequestBody LoginRequest request) {
-        /* TODO: buscar usuario por email */
-        return usuarioService.login(request);
+    public UsuarioDTO login(@RequestBody LoginRequest request) {
+        Usuario usuario = authService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return new UsuarioDTO(usuario);
     }
 
     @PostMapping("/logout")

@@ -3,20 +3,20 @@ package com.grupo.tpFinal.dto;
 public class TicketsStatsDTO {
 
     private long total;
-    private long abiertos;
+    private long noAtendidos;
     private long enProceso;
     private long cerrados;
 
-    public TicketsStatsDTO(long total, long abiertos, long enProceso, long cerrados) {
+    public TicketsStatsDTO(long total, long noAtendidos, long enProceso, long cerrados) {
         this.total = total;
-        this.abiertos = abiertos;
+        this.noAtendidos = noAtendidos;
         this.enProceso = enProceso;
         this.cerrados = cerrados;
     }
 
 
-    public long getAbiertos() {
-        return abiertos;
+    public long getnoAtendidos() {
+        return noAtendidos;
     }
 
     public long getCerrados() {

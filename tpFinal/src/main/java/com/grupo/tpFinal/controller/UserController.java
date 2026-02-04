@@ -13,10 +13,16 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     public UserController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "API OK";
     }
 
 

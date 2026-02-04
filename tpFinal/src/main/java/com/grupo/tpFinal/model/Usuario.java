@@ -15,7 +15,11 @@ public class Usuario {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo" , nullable = false)
     private Rol rol;
+
+    private boolean forzarCambio;
+    private boolean bloqueado;
 
     public Long getId() {
         return id;
