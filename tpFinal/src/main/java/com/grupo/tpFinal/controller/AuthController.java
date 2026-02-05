@@ -1,6 +1,8 @@
 package com.grupo.tpFinal.controller;
 
+import com.grupo.tpFinal.config.JwtUtil;
 import com.grupo.tpFinal.dto.LoginRequest;
+import com.grupo.tpFinal.dto.LoginResponse;
 import com.grupo.tpFinal.dto.UsuarioDTO;
 import com.grupo.tpFinal.model.Usuario;
 import com.grupo.tpFinal.service.AuthService;
@@ -22,18 +24,33 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     public AuthController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
     @PostMapping("/login")
-    public UsuarioDTO login(@RequestBody LoginRequest request) {
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        /*
         Usuario usuario = authService.login(
                 request.getEmail(),
                 request.getPassword()
         );
 
         return new UsuarioDTO(usuario);
+         */
+
+        Usuario usuario = authService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        String token = jwtUtil.generarToken(usuario);
+
+        return new LoginResponse(token, new UsuarioDTO(usuario));
+
     }
 
     @PostMapping("/logout")

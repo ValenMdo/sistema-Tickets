@@ -20,14 +20,12 @@ import java.util.List;
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-    @Autowired
-    private TicketService ticketService;
+    private final TicketService ticketService;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
-    public TicketController(TicketService ticketService) {
+    public TicketController(TicketService ticketService, UsuarioService usuarioService ) {
         this.ticketService = ticketService;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/lista")
@@ -68,7 +66,6 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ticket);
     }
 
-    @PutMapping("/{id}/estado")
     public Ticket cambiarEstado(
             @PathVariable Long id,
             @RequestBody EstadoTicket estado) {
@@ -81,4 +78,26 @@ public class TicketController {
         return "TicketController OK";
     }
 
+
+    // TOMAR TICKET
+    @PutMapping("/{id}/tomar")
+    public Ticket tomarTicket(@PathVariable Long id) {
+
+        Usuario tecnico = usuarioService.getUsuarioActual();
+
+        if (tecnico.getRol() != Rol.TECNICO) {
+            throw new RuntimeException("Solo técnicos pueden tomar tickets");
+        }
+
+        return ticketService.tomarTicket(id, tecnico);
+    }
+
+    // RESOLVER TICKET
+    @PutMapping("/{id}/resolver")
+    public Ticket resolverTicket(@PathVariable Long id) {
+
+        Usuario tecnico = usuarioService.getUsuarioActual();
+
+        return ticketService.resolverTicket(id, tecnico);
+    }
 }

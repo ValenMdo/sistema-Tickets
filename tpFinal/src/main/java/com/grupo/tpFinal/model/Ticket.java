@@ -24,6 +24,7 @@ public class Ticket {
     private Usuario creador;
 
     @ManyToOne
+    @JoinColumn(name = "id_tecnico_actual")
     private Usuario tecnicoAsignado;
 
     private LocalDateTime hora;
@@ -44,12 +45,13 @@ public class Ticket {
         this.estado = estado;
     }
 
-    public Usuario getCreador() {
-        return creador;
-    }
 
     public void setCreador(Usuario creador) {
         this.creador = creador;
+    }
+
+    public void setTecnicoAsignado(Usuario tecnicoAsignado) {
+        this.tecnicoAsignado = tecnicoAsignado;
     }
 
     public String getTitulo() {
@@ -71,4 +73,10 @@ public class Ticket {
     public String getDescripcion() {
         return descripcion;
     }
+
+    public Usuario getCreador() {
+        return creador;
+    }
+
+
 }

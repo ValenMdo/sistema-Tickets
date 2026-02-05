@@ -54,4 +54,36 @@ public class TicketService {
 
         return new TicketsStatsDTO(total, noAtendidos, enProceso, cerrados);
     }
+
+    public Ticket tomarTicket(Long id, Usuario tecnico) {
+
+        Ticket ticket = ticketRepo.findById(id).orElseThrow();
+
+        if (ticket.getEstado() != EstadoTicket.NO_ATENDIDO) {
+            throw new RuntimeException("El ticket ya fue tomado");
+        }
+
+        ticket.setEstado(EstadoTicket.EN_PROCESO);
+        ticket.setTecnicoAsignado(tecnico);
+
+        return ticketRepo.save(ticket);
+    }
+
+    public Ticket resolverTicket(Long id, Usuario tecnico) {
+
+        Ticket ticket = ticketRepo.findById(id).orElseThrow();
+
+        if (ticket.getEstado() != EstadoTicket.EN_PROCESO) {
+            throw new RuntimeException("El ticket no está en proceso");
+        }
+
+
+        if (ticket.getTecnicoAsignado() == null ||
+                !ticket.getTecnicoAsignado().getId().equals(tecnico.getId())) {
+            throw new RuntimeException("No sos el técnico asignado");
+        }
+
+        ticket.setEstado(EstadoTicket.RESUELTO);
+        return ticketRepo.save(ticket);
+    }
 }
